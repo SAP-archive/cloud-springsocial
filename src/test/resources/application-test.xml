@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"   
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd 
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd">
+     
+    <context:component-scan base-package="com.sap.netweaver.cloud.teched.cd208"/> 
+    
+	<bean id="baseService" class="com.sap.netweaver.cloud.samples.springsocial.srv.BaseService" abstract="true">
+	</bean>
+	
+	<bean id="contentService" class="com.sap.netweaver.cloud.samples.springsocial.srv.ContentService" parent="baseService" />
+	<bean id="dashboardService" class="com.sap.netweaver.cloud.samples.springsocial.srv.DashboardService" parent="baseService"/>
+	
+	<bean id="jacksonProvider" class="org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider">
+		<property name="mapper" ref="objectMapper"/>
+	</bean>
+	
+	<bean id="formProvider" class="org.apache.cxf.jaxrs.provider.FormEncodingProvider" />
+	
+	<bean id="objectMapper" class="com.sap.netweaver.cloud.samples.springsocial.srv.CustomJsonMapper" />
+	
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+  		<property name="locations" value="classpath:oauth.properties"/>
+	</bean>
+	
+	<bean id="twitter" class="org.springframework.social.twitter.api.impl.TwitterTemplate">
+		<constructor-arg index="0" value="${oauth.consumerKey}"/>
+		<constructor-arg index="1" value="${oauth.consumerSecret}"/>
+		<constructor-arg index="2" value="${oauth.accessToken}"/>
+		<constructor-arg index="3" value="${oauth.accessTokenSecret}"/>
+	</bean>
+</beans>

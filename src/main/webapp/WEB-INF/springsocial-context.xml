@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"   
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xmlns:cxf="http://cxf.apache.org/core"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd 
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
+       http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+       http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd">
+    
+    <import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+    
+    <context:component-scan base-package="com.sap.netweaver.cloud.samples.springsocial"/> 
+    
+	<bean id="baseService" class="com.sap.netweaver.cloud.samples.springsocial.srv.BaseService" abstract="true">
+	</bean>
+	
+	<bean id="contentService" class="com.sap.netweaver.cloud.samples.springsocial.srv.ContentService" parent="baseService" />
+	<bean id="dashboardService" class="com.sap.netweaver.cloud.samples.springsocial.srv.DashboardService" parent="baseService"/>
+	<bean id="tweetService" class="com.sap.netweaver.cloud.samples.springsocial.srv.TweetService" parent="baseService"/>
+	
+	<jaxrs:server id="restContainer" address="/v1">
+		<jaxrs:properties>
+            <entry key="org.apache.cxf.propagate.exception" value="false" />
+        </jaxrs:properties>
+		<jaxrs:serviceBeans>
+			<ref bean="contentService"/>
+			<ref bean="dashboardService"/>
+			<ref bean="tweetService"/>
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+            <ref bean="jacksonProvider" />
+            <ref bean="formProvider" />
+        </jaxrs:providers>
+	</jaxrs:server>
+	
+	<bean id="jacksonProvider" class="org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider">
+		<property name="mapper" ref="objectMapper"/>
+	</bean>
+	
+	<bean id="formProvider" class="org.apache.cxf.jaxrs.provider.FormEncodingProvider" />
+	
+	<bean id="objectMapper" class="com.sap.netweaver.cloud.samples.springsocial.srv.CustomJsonMapper" />
+	
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+  		<property name="locations" value="classpath:oauth.properties"/>
+	</bean>
+	
+	<bean id="twitter" class="org.springframework.social.twitter.api.impl.TwitterTemplate">
+		<constructor-arg index="0" value="${oauth.consumerKey}"/>
+		<constructor-arg index="1" value="${oauth.consumerSecret}"/>
+		<constructor-arg index="2" value="${oauth.accessToken}"/>
+		<constructor-arg index="3" value="${oauth.accessTokenSecret}"/>
+	</bean>
+</beans>
