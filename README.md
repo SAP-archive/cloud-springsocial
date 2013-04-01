@@ -1,4 +1,4 @@
-SAP NetWeaver Cloud Samples - springsocial
+SAP HANA Cloud Samples - springsocial
 ========
 
 This sample demonstrates how-to use [spring-social](http://www.springsource.org/spring-social) to develop applications that integrate with [Twitter](http://twitter.com).
@@ -6,13 +6,13 @@ This sample demonstrates how-to use [spring-social](http://www.springsource.org/
 Quick start
 -----------
 
-Clone the repo, `git clone https://github.com/sapnwcloud/springsocial.git`, or [download the latest release](https://github.com/sapnwcloud/springsocial/zipball/master).
+Clone the repo, `git clone https://github.com/sap/cloud-springsocial.git`, or [download the latest release](https://github.com/sap/cloud-springsocial/zipball/master).
 
 
 Versioning
 ----------
 
-For transparency and insight into our release cycle, and for striving to maintain backward compatibility, the SAP NetWeaver Cloud - Samples project will be maintained under the Semantic Versioning guidelines as much as possible.
+For transparency and insight into our release cycle, and for striving to maintain backward compatibility, the SAP HANA Cloud - Samples project will be maintained under the Semantic Versioning guidelines as much as possible.
 
 Releases will be numbered with the following format:
 
